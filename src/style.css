@@ -5,20 +5,28 @@
   padding: 20px;
   border-radius: 5px;
 }
-.description{
-    list-style: none;
-    text-transform: capitalize;
-    padding: 0;
+.description {
+  list-style: none;
+  text-transform: capitalize;
+  padding: 0;
 }
-.temperature{
-    font-size: 50px;
-    color: rgb(50, 50, 98);
-  
+.temperature {
+  font-size: 50px;
+  color: rgb(50, 50, 98);
 }
-.degree{
-   font-size: 20px;
-   
+.degree {
+  font-size: 20px;
 }
-.details{
-    list-style: none;
+.details {
+  list-style: none;
+}
+.forecast-date {
+  font-size: 17px;
+  opacity: 0.8;
+}
+.max-min {
+  font-size: 12px;
+}
+.max {
+  font-weight: bold;
 }
