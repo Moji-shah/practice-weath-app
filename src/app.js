@@ -41,7 +41,7 @@ function displayTemperature(response) {
     "src",
     `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${response.data.condition.icon}.png`
   );
-   getForecast(response.data.coordinates);
+  getForecast(response.data.coordinates);
 }
 function search(city) {
   let apiKey = "3244187444f4b03034a273eot82c9c1e";
@@ -67,38 +67,51 @@ function displayCelsius(event) {
 }
 function getForecast(coordinates) {
   let apiKey = "3244187444f4b03034a273eot82c9c1e";
- let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${coordinates.longitude}&lat=${coordinates.latitude}&key=${apiKey}&units=metric`;
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${coordinates.longitude}&lat=${coordinates.latitude}&key=${apiKey}&units=metric`;
   axios.get(apiUrl).then(displayForecast);
 }
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  return days[day];
+}
 function displayForecast(response) {
-  console.log(response.data);
   let forecastElement = document.querySelector("#forecast");
   let forecastHTML = `<div class="row">`;
-  let days = ["Fri", "Sat", "Sun", "Mon", "Thu"];
-  days.forEach(function (day) {
-    forecastHTML =
+  let forecast = response.data.daily;
+  forecast.forEach(function (forecastDay,index) {
+    if(index<6){
+
+      forecastHTML =
       forecastHTML +
       `
-            <div class="col-2">
-              <div class="forecast-temp">${day}</div>
-              <img
-                src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/scattered-clouds-day.png"
-                alt="" width="30"
-              />
-              <div class="max-min">
-                <span class="max">18</span>
-                <span class="min">12</span>
-              </div>
-
-            
-            </div>
+      <div class="col-2">
+      <div class="forecast-temp">${formatDay(forecastDay.time)}</div>
+      <img
+      src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${
+        forecastDay.condition.icon
+      }.png"
+      alt="" width="30"
+      />
+      <div class="max-min">
+      <span class="max">${Math.round(
+        forecastDay.temperature.maximum
+        )}</span>
+        <span class="min">${Math.round(
+          forecastDay.temperature.minimum
+          )}</span>
+          </div>
+          
+          
+          </div>
           `;
-  });
+        }
+        });
 
   forecastHTML = forecastHTML + `</div>`;
   forecastElement.innerHTML = forecastHTML;
-
- 
 }
 
 let celsiusTemperature = null;
@@ -111,4 +124,3 @@ fahrenheitLink.addEventListener("click", displayFahrenheit);
 
 let celsiusLink = document.querySelector("#celsius");
 celsiusLink.addEventListener("click", displayCelsius);
-
